@@ -25,7 +25,7 @@
 
 ## Why this repo exists
 
-PyTorch's fused-attention kernel is fast — but it's a black box. The point of this repo is to rebuild the transformer hot path from first principles in Triton: attention, RMSNorm, SwiGLU, RoPE — each as an independently benchmarked kernel with ablations on tile size, num_warps, and pipeline depth, plus a writeup of *why* each choice matters.
+PyTorch's fused-attention kernel is fast · but it's a black box. The point of this repo is to rebuild the transformer hot path from first principles in Triton: attention, RMSNorm, SwiGLU, RoPE · each as an independently benchmarked kernel with ablations on tile size, num_warps, and pipeline depth, plus a writeup of *why* each choice matters.
 
 > **Status:** kernel scaffolding + benchmark harness. First milestone: forward attention within 5% of `F.scaled_dot_product_attention` on H100.
 
@@ -54,7 +54,7 @@ flowchart LR
     O -.-> NEXTKV[next KV tile]
 ```
 
-Each Q tile scans all KV tiles, accumulating the softmax statistics `(m, l)` and the partial output online — i.e., never materializing the full `BLOCK_M × N` attention matrix. This is the FlashAttention insight, restated in Triton.
+Each Q tile scans all KV tiles, accumulating the softmax statistics `(m, l)` and the partial output online · i.e., never materializing the full `BLOCK_M × N` attention matrix. This is the FlashAttention insight, restated in Triton.
 
 ## Benchmark methodology
 
@@ -104,12 +104,12 @@ uv run bench/attention.py --ablate BLOCK_M:64,128,256 --ablate BLOCK_N:64,128
 
 ## Inspiration & required reading
 
-- [GPU MODE — lectures & community](https://github.com/gpu-mode/lectures)
-- [ScalingIntelligence/KernelBench](https://github.com/ScalingIntelligence/KernelBench) — kernel benchmarking methodology
-- [linkedin/Liger-Kernel](https://github.com/linkedin/Liger-Kernel) — production-quality fused training kernels
+- [GPU MODE · lectures & community](https://github.com/gpu-mode/lectures)
+- [ScalingIntelligence/KernelBench](https://github.com/ScalingIntelligence/KernelBench) · kernel benchmarking methodology
+- [linkedin/Liger-Kernel](https://github.com/linkedin/Liger-Kernel) · production-quality fused training kernels
 - [Triton tutorials](https://triton-lang.org/main/getting-started/tutorials/index.html)
-- [Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention) — the paper that started it
-- [pytorch/ao](https://github.com/pytorch/ao) — quantization + fused-op patterns
+- [Dao-AILab/flash-attention](https://github.com/Dao-AILab/flash-attention) · the paper that started it
+- [pytorch/ao](https://github.com/pytorch/ao) · quantization + fused-op patterns
 
 ---
 
